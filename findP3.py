@@ -1,32 +1,36 @@
+#coding=utf-8
 #description: https://www.jianshu.com/p/7658f8700a1d
-#put ipa and f.py in desktop
-#excute path is desttop
+#./findP3.py ipa_path
 
-ipa = './BaoXianBang.ipa'
-des = './cer.zip'
-
-import os
+import os,sys
 import json
 import getpass 
 
-os.system('rm -r ./Assets.car'  )
+ipa = sys.argv[1]
+des = './cer.zip'
+f_name = os.path.basename(ipa).split(".")[0]
+
+def remove_res():
+	os.system('rm -r  ./Assets.car')
+	os.system('rm -r ./cer.zip'  )
+	os.system('rm -r ./Payload'  )
+
+remove_res()
 os.system('rm -r ./Assets.json'  )
-os.system('rm -r ./cer.zip'  )
-os.system('rm -r ./Payload'  )
 
 os.system('cp '+ipa+' ' +des)
 os.system('unzip ' +des)
-os.chdir('./Payload/BaoXianBang.app')
-os.system('cp '+ 'Assets.car' + ' ~/Desktop/Assets.car'  )
-os.system('xcrun --sdk iphoneos assetutil --info ~/Desktop/Assets.car  > ~/Desktop/Assets.json')
+os.chdir('./Payload/'+f_name+'.app')
+os.system('cp '+ 'Assets.car' + ' ../../Assets.car'  )
+os.chdir('../../')
+os.system('xcrun --sdk iphoneos assetutil --info ./Assets.car  > ./Assets.json')
 
-os.system('rm -r ~/Desktop/Assets.car'  )
-os.system('rm -r ~/Desktop/cer.zip'  )
-os.system('rm -r ~/Desktop/Payload'  )
+remove_res()
 
-os.chdir('/Users/'+getpass.getuser()+'/Desktop/')
 with open('./Assets.json') as f:
 	data  = json.loads(f.read())
+	hasError = False
+
 	for dict in data:
 		is_error_pic = False
 		if dict.has_key('Encoding'):
@@ -38,5 +42,15 @@ with open('./Assets.json') as f:
 
 		if is_error_pic:
 			print  'error pic------------->'+ dict['RenditionName']
+			hasError = True
 
-os.system('open ~/Desktop/Assets.json'  )
+	if hasError:
+		os.system('open ./Assets.json'  )
+	else:
+		os.system('rm -r ./Assets.json')
+
+		print '---------没有找到错误图片------\n'*3
+		 
+
+
+
