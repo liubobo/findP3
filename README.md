@@ -8,4 +8,4 @@
 
 找到后，让UI再作图即可
  
-把findP3.py 脚本和 ipa包都放在桌面上，然后在桌面执行 ./findP3.py 即可
+把findP3.py 脚本和 ipa包都放在桌面上，然后在桌面执行 ./findP3.py ipa_path 即可
