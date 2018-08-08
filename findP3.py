@@ -32,17 +32,15 @@ with open('./Assets.json') as f:
 	hasError = False
 
 	for dict in data:
-		is_error_pic = False
-		if dict.has_key('Encoding'):
+		if dict.has_key('Encoding') :
 			if dict['Encoding'] == 'ARGB-16':
-				is_error_pic = True
+				hasError = True
 		if dict.has_key('DisplayGamut'):
 			 if dict['DisplayGamut'] == 'P3':
-			 	is_error_pic = True
+			 	hasError = True
 
-		if is_error_pic:
+		if hasError:
 			print  'error pic------------->'+ dict['RenditionName']
-			hasError = True
 
 	if hasError:
 		os.system('open ./Assets.json'  )
